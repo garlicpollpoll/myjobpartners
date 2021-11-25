@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/boardv2?serverTimezone=UTC&chyaracterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+  profiles:
+    include: google, naver, kakao
+logging:
+  level:
+    org.hibernate.SQL: debug
