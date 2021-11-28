@@ -35,18 +35,3 @@ test {
 	useJUnitPlatform()
 }
 
-sourceSets {
-	main {
-		resources {
-			main.resources.srcDir("src/main/resources")
-		}
-	}
-}
-
-sourceSets {
-	main {
-		resources {
-			srcDir 'src/resources'
-		}
-	}
-}
