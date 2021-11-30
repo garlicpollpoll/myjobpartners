@@ -1,10 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index/navbar.css">
+    <link rel="stylesheet" href="/css/index/header.css">
+    <link rel="stylesheet" href="/css/index/carousel.css">
+    <link rel="stylesheet" href="/css/index/business.css">
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <title>마이잡파트너스</title>
 </head>
 <body>
-인덱스파일입니다.
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="/image/logo.png" width="80" height="30" class="mini-logo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/login">로그인</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">회원가입</a>
+                </li>
+            </ul>
+            <form class="d-flex" action="/search" method="post">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- header -->
+<div class="header">
+    <a href="/"><img src="/image/logo.png" class="logo-image"></a>
+
+    <ul class="header-menu">
+        <li class="menu"><a href="/" class="menu-info">홈</a></li>
+        <li class="menu"><a href="/business" class="menu-info">사업분야</a></li>
+        <li class="menu"><a href="/notice" class="menu-info">공지사항</a></li>
+        <li class="menu"><a href="/info" class="menu-info">채용정보</a></li>
+        <li class="menu"><a href="/inquiry" class="menu-info">문의하기</a></li>
+    </ul>
+</div>
+
+<!-- mini-header -->
+<div class="mini-header">
+    <div class="mini-menu">
+        <a href="/business" class="detail-menu">사업분야</a>
+    </div><div class="mini-menu">
+        <a href="/notice" class="detail-menu">공지사항</a>
+    </div>
+    <div class="mini-menu">
+        <a href="/info" class="detail-menu">채용정보</a>
+    </div><div class="mini-menu">
+        <a href="/inquiry" class="detail-menu">문의하기</a>
+    </div>
+</div>
+
+<!-- carousel -->
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="/image/building.jpg" class="d-block w-100 carousel-image" alt="...">
+            <div class="carousel-caption d-md-block">
+                <p  class="banner-message">인재파견&아웃소싱 전문기업</p>
+                <p class="banner-message">주식회사 마이잡파트너스</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="/image/working.jpg" class="d-block w-100 carousel-image" alt="...">
+            <div class="carousel-caption d-md-block">
+                <p class="banner-message">전문 staff, 차별화된 system</p>
+                <p class="banner-message">최상의 Total service</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- business part div -->
+<div class="business">
+    <div class="business-header">
+        <p>DIFFERENTIATED</p>
+        <p>SUCCESSFUL PARTNER</p>
+    </div>
+
+    <div class="business-middle">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

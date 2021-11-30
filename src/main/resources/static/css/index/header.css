@@ -1,0 +1,64 @@
+.menu, .header-menu {
+    display: inline-block;
+}
+
+.header {
+    width: 100%;
+    height: 100px;
+    padding-top: 20px;
+    padding-left: 15%;
+}
+
+.logo-image {
+    margin-right: 20%;
+}
+
+.menu {
+    margin-right: 30px;
+    font-weight: bold;
+}
+
+.menu-info:hover {
+    color: #bcbebf;
+}
+
+.mini-header {
+    display: none;
+}
+
+.mini-logo {
+    display: none;
+}
+
+
+
+@media screen and (max-width: 992px){
+    .header {
+        display: none;
+    }
+
+    .mini-header {
+        display: inline;
+        padding-top: 30px;
+    }
+
+    .mini-logo {
+        display: inline;
+    }
+
+    .detail-menu {
+        display: block;
+        width: 100%;
+        height: 50px;
+        border: skyblue 1px solid;
+        padding-top: 10px;
+    }
+}
+
+/* mini-header */
+.mini-menu {
+    width: 50%;
+    height: 50px;
+    text-align: center;
+    display: inline-block;
+}
