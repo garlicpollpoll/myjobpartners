@@ -15,6 +15,11 @@
     border-bottom: white 1px solid;
 }
 
-.business .business-header p {
+p {
     margin-bottom: 0;
+}
+
+.business-middle {
+    width: 100%;
+    height: 400px;
 }
