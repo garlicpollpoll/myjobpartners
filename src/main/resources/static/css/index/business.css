@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "NanumSquare";
+    src: url("../../font/NanumSquare.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
 .business {
     width: 100%;
     height: 800px;
@@ -13,6 +20,7 @@
     font-weight: bold;
     font-size: 30px;
     border-bottom: white 1px solid;
+    margin-bottom: 30px;
 }
 
 p {
@@ -23,3 +31,116 @@ p {
     width: 100%;
     height: 400px;
 }
+
+.business-model {
+    display: inline-block;
+    width: 22.75%;
+    height: 350px;
+    margin-right: 3%;
+    overflow: auto;
+    padding: 0px 10px 0px;
+}
+
+.business-model:nth-child(5) {
+    margin-right: 0;
+}
+
+.business-header + .business-model {
+    background-color: inherit;
+    padding: 0;
+}
+
+.business-model-inner {
+    background-color: #0c73e4;
+    width: 100%;
+    height: 320px;
+    border-radius: 20px;
+    text-align: center;
+    padding: 20px;
+    color: white;
+    font-family: NanumSquare;
+}
+
+.business-model:nth-child(4) > .business-model-inner {
+    height: 100%;
+}
+
+.business-model:nth-child(5) > .business-model-inner {
+    height: 90%;
+}
+
+h5 {
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-top: 20px;
+}
+
+.business-model-inner p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 992px) {
+    .business-model-inner p {
+        font-size: 12px;
+    }
+
+    h5 {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .business-model {
+        width: 48%;
+        height: 200px;
+        margin-right: 4%;
+        padding: 0;
+    }
+
+    .business-model:nth-child(3) {
+        margin-right: 0;
+    }
+
+    .business-model-inner {
+        width: 100%;
+        height: 100%;
+    }
+
+    .business-model:nth-child(5) > .business-model-inner {
+        height: 100%;
+    }
+
+    .business {
+        padding: 50px;
+    }
+}
+
+@media screen and (max-width: 660px) {
+    .business-model {
+        width: 100%;
+        height: 200px;
+        margin: 20px 0;
+    }
+
+    .business-header + .business-model {
+        height: 80px;
+    }
+
+    .business {
+        height: 1200px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .business-model {
+        height: 250px;
+        margin: 10px 0;
+    }
+
+    .business-model-inner p {
+        margin-bottom: 20px;
+    }
+}
+

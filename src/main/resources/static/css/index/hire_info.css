@@ -1,0 +1,74 @@
+.hire-info {
+    width: 100%;
+    height: 1000px;
+    background-color: #f6f6f6;
+    padding: 100px;
+}
+
+.hire-info-header {
+    text-align: center;
+}
+
+.hire-info h5 {
+    margin: 0 0 70px;
+}
+
+.hire-info-inner {
+    width: 50%;
+    height: 300px;
+    display: inline-block;
+    margin-bottom: 40px;
+    padding: 0 60px;
+}
+
+.card-base {
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    padding: 10px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    border: #ddd 1px solid;
+}
+
+.card-body {
+    padding: 10px 16px;
+}
+
+.card-body p {
+    font-size: 18px;
+    font-family: NanumSquare;
+}
+
+.card-body h5 {
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (max-width: 900px) {
+    .hire-info-inner {
+        width: 100%;
+    }
+
+    .card-base {
+        width: 350px;
+        margin: 0 auto;
+    }
+
+    .hire-info {
+        height: 1500px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .hire-info {
+        padding: 20px;
+    }
+
+    .hire-info-inner {
+        padding: 0;
+    }
+}
