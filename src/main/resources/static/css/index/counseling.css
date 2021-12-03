@@ -1,0 +1,92 @@
+.counseling {
+    width: 100%;
+    height: 700px;
+    background-color: #f6f6f6;
+    padding: 50px 100px;
+}
+
+.counseling-image {
+    width: 60%;
+    height: 450px;
+    text-align: center;
+    position: relative;
+}
+
+.counseling-image-message {
+    position: absolute;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: NanumSquare;
+    font-size: 20px;
+}
+
+.image {
+    width: 100%;
+    height: 447px;
+    filter: brightness(50%);
+}
+
+.counseling-form {
+    width: 40%;
+    height: 450px;
+    padding: 20px 0px 20px 40px;
+}
+
+.counseling-image, .counseling-form {
+    display: inline-block;
+    overflow: auto;
+}
+
+.counseling-form-header h5 {
+    margin-bottom: 0;
+    font-size: 20px;
+}
+
+.counseling-form-header p {
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.name, .email, .content {
+    margin-bottom: 15px;
+}
+
+@media screen and (max-width: 992px) {
+    .counseling-image {
+        width: 100%;
+    }
+
+    .counseling-form {
+        width: 100%;
+        padding: 0;
+    }
+
+    .counseling {
+        height: 1000px;
+        padding-top: 0;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .counseling-image {
+        width: 100%;
+        height: 300px;
+    }
+
+    .image {
+        width: 100%;
+        height: 300px;
+    }
+
+    .counseling {
+        height: 800px;
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .counseling {
+        padding: 20px;
+    }
+}

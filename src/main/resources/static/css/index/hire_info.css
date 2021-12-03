@@ -59,16 +59,25 @@
     }
 
     .hire-info {
-        height: 1500px;
+        height: 1650px;
+        padding-bottom: 50px;
     }
 }
 
 @media screen and (max-width: 700px) {
     .hire-info {
         padding: 20px;
+        height: 1500px;
     }
 
     .hire-info-inner {
         padding: 0;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .card-base {
+        width: 350px;
+        margin: 0 auto;
     }
 }
