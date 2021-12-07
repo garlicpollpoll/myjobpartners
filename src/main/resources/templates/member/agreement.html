@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index/navbar.css">
+    <link rel="stylesheet" href="/css/index/header.css">
+    <link rel="stylesheet" href="/css/index/footer.css">
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <title>마이잡파트너스</title>
+</head>
+<body>
+
+<div class="agreement">
+    <input type="checkbox" id="allCheck" onclick="setCheckBox('Y')">
+    <input type="checkbox" id="use_agreement">
+    <input type="checkbox" id="personal_info">
+</div>
+
+<script type="text/javascript">
+
+    function setCheckBox(type) {
+        if ($("input:checkbox[id = 'allCheck']").is(":checked") == true) {
+            $("input:checkbox[id = 'use_agreement']").prop("checked", true);
+            $("input:checkbox[id = 'personal_info']").prop("checked", true);
+        }
+        else {
+            $("input:checkbox[id = 'use_agreement']").prop("checked", false);
+            $("input:checkbox[id = 'personal_info']").prop("checked", false);
+        }
+    }
+
+</script>
+
+</body>
+</html>

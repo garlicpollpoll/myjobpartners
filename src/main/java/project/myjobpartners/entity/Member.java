@@ -16,14 +16,14 @@ public class Member {
     private Long id;
 
     private String email;
-    private String loginPw;
+    private String password;
     private String name;
 
     private String residentNum;
 
-    public Member(String email, String loginPw, String name, String residentNum) {
+    public Member(String email, String password, String name, String residentNum) {
         this.email = email;
-        this.loginPw = loginPw;
+        this.password = password;
         this.name = name;
         this.residentNum = residentNum;
     }

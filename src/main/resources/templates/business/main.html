@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/index/navbar.css">
     <link rel="stylesheet" href="/css/index/header.css">
     <link rel="stylesheet" href="/css/index/footer.css">
+    <link rel="stylesheet" href="/css/business/main.css">
     <script src="/js/bootstrap.js"></script>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <title>마이잡파트너스</title>
@@ -18,8 +19,16 @@
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/mini_header :: mini_header"></div>
 
-<div>
-
+<div class="wrap">
+    <div class="sidebar">
+        <ul>
+            <li><a href="/outsourcing">아웃소싱</a></li>
+            <li><a href="/agent">채용대행</a></li>
+            <li><a href="/contracting">도급</a></li>
+        </ul>
+    </div><div class="inner-image">
+        <img src="/image/business.png" style="max-width: 100%">
+    </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>

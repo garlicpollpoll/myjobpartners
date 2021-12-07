@@ -1,0 +1,46 @@
+.wrap {
+    width: 100%;
+    height: 800px;
+    padding: 50px 100px;
+}
+
+.sidebar {
+    width: 20%;
+    height: 100%;
+}
+
+.sidebar li {
+    margin-top: 15px;
+}
+
+.inner-image {
+    width: 80%;
+    height: 100%;
+}
+
+.sidebar, .inner-image {
+    display: inline-block;
+    overflow: auto;
+}
+
+@media screen and (max-width: 992px) {
+    .sidebar {
+        width: 100%;
+        height: 150px;
+    }
+
+    .inner-image {
+        width: 100%;
+        height: 600px;
+    }
+
+    .wrap {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .wrap {
+        height: 500px;
+    }
+}

@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head"></head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index/navbar.css">
+    <link rel="stylesheet" href="/css/index/header.css">
+    <link rel="stylesheet" href="/css/index/footer.css">
+    <link rel="stylesheet" href="/css/member/login.css">
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <title>마이잡파트너스</title>
+
+    <style>
+        .field-error {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+    </style>
+</head>
 <body>
 
 <nav th:replace="fragments/navbar :: navbar"></nav>
@@ -8,16 +27,29 @@
 <div th:replace="fragments/mini_header :: mini_header"></div>
 
 <div class="container">
-    <div class="col-md-4">
-
-    </div><div class="col-md-4">
-        <div class="jumbotron" style="padding-top: 20px;">
-            <form action="/login" method="post" th:object="${login}">
-
-            </form>
+    <div class="login-form">
+        <div class="login-header">
+            <p>Login</p>
         </div>
-    </div><div class="col-md-4">
+        <form action="/login" method="post" th:object="${login}">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지지</p>
+            </div>
 
+            <p>이메일</p>
+            <input type="text" class="form-control" name="email" th:field="*{email}" th:errorclass="field-error">
+            <div class="field-error">
+                <p th:errors="*{email}"></p>
+            </div>
+            <p>패스워드</p>
+            <input type="password" class="form-control" name="loginPw" th:field="*{password}" th:errorclass="field-error">
+            <div class="field-error">
+                <p th:errors="*{password}"></p>
+            </div>
+            <div class="d-grid gap-2">
+                <input type="submit" class="btn btn-dark" value="로그인">
+            </div>
+        </form>
     </div>
 </div>
 
