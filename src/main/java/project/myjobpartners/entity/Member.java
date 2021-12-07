@@ -15,12 +15,16 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    private String email;
+    private String loginPw;
     private String name;
 
-    private int age;
+    private String residentNum;
 
-    public Member(String name, int age) {
+    public Member(String email, String loginPw, String name, String residentNum) {
+        this.email = email;
+        this.loginPw = loginPw;
         this.name = name;
-        this.age = age;
+        this.residentNum = residentNum;
     }
 }

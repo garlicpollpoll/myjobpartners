@@ -7,7 +7,19 @@
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/mini_header :: mini_header"></div>
 
+<div class="container">
+    <div class="col-md-4">
 
+    </div><div class="col-md-4">
+        <div class="jumbotron" style="padding-top: 20px;">
+            <form action="/login" method="post" th:object="${login}">
+
+            </form>
+        </div>
+    </div><div class="col-md-4">
+
+    </div>
+</div>
 
 <div th:replace="fragments/footer :: footer"></div>
 </body>
