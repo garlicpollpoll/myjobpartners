@@ -44,6 +44,6 @@ public class HomeController {
 
     @GetMapping("/register")
     public String join() {
-        return "member/join";
+        return "member/agreement";
     }
 }

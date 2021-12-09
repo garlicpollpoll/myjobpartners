@@ -1,6 +1,7 @@
 package project.myjobpartners.controller.login;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class LoginController {
 
     private final MemberRepository memberRepository;
@@ -37,6 +39,6 @@ public class LoginController {
             bindingResult.reject("notFound");
         }
 
-        return "redirect:/" + stringUri;
+        return "redirect:/";
     }
 }
