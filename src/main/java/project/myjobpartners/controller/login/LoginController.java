@@ -39,7 +39,6 @@ public class LoginController {
         if (findMember == null) {
             bindingResult.reject("notFound");
         }
-
         return "redirect:/";
     }
 }
