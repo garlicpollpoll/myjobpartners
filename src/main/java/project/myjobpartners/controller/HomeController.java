@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import project.myjobpartners.dto.form.AgreementForm;
+import project.myjobpartners.dto.form.JoinForm;
 import project.myjobpartners.dto.form.LoginForm;
 
 @Controller
@@ -35,6 +37,13 @@ public class HomeController {
         return "business/contracting";
     }
 
+    @GetMapping("/join")
+    public String join(Model model) {
+        JoinForm join = new JoinForm();
+        model.addAttribute("join", join);
+        return "member/join";
+    }
+
     @GetMapping("/login")
     public String login(Model model) {
         LoginForm login = new LoginForm();
@@ -43,7 +52,9 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    public String join() {
+    public String register(Model model) {
+        AgreementForm agreement = new AgreementForm();
+        model.addAttribute("agreement", agreement);
         return "member/agreement";
     }
 }

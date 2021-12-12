@@ -3,6 +3,7 @@ package project.myjobpartners.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.myjobpartners.dto.enums.DType;
 
 import javax.persistence.*;
 
@@ -21,10 +22,14 @@ public class Member {
 
     private String residentNum;
 
-    public Member(String email, String password, String name, String residentNum) {
+    @Enumerated(EnumType.STRING)
+    private DType gender;
+
+    public Member(String email, String password, String name, String residentNum, DType gender) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.residentNum = residentNum;
+        this.gender = gender;
     }
 }

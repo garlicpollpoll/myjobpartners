@@ -21,13 +21,10 @@ public class LoginController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("login")LoginForm form, BindingResult bindingResult,
-                        HttpServletRequest request) {
+    public String login(@Validated @ModelAttribute("login")LoginForm form, BindingResult bindingResult) {
         LoginForm login = new LoginForm();
         login.setEmail(form.getEmail());
         login.setPassword(form.getPassword());
-
-        String stringUri = request.getRequestURI();
 
         if (bindingResult.hasErrors()) {
             return "member/login";
@@ -38,6 +35,7 @@ public class LoginController {
 
         if (findMember == null) {
             bindingResult.reject("notFound");
+            return "member/login";
         }
         return "redirect:/";
     }
