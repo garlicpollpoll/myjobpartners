@@ -58,13 +58,6 @@ public class HomeController {
 
     @GetMapping("/write")
     public String write(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        String email = (String) session.getAttribute("email");
-
-        if (email == null) {
-            return "redirect:/notice";
-        }
-
         WriteForm write = new WriteForm();
         model.addAttribute("write", write);
         return "board/write";

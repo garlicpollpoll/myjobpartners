@@ -55,10 +55,28 @@
         </table>
     </div>
     <div class="board-footer">
-        <a href="/write" class="btn btn-dark">글쓰기</a>
+        <a class="btn btn-primary" href="/write">글쓰기</a><!-- 개발용 -->
+        <button class="btn btn-dark" type="button" id="write">글쓰기</button>
     </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
+
+<script type="text/javascript">
+    // $(document).ready(function (){
+    //     const write = document.getElementById('write');
+    //
+    //     write.addEventListener('click', () =>{
+    //         var email = '[[${session.email}]]';
+    //         if (email == "") {
+    //             alert('로그인 후 이용해주세요');
+    //             location.href = "/notice";
+    //         }
+    //         else {
+    //             location.href = "/write";
+    //         }
+    //     });
+    // })
+</script>
 </body>
 </html>

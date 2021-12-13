@@ -21,10 +21,13 @@ public class Notice {
     private LocalDateTime writeDate;
     private int count;
 
-    public Notice(String title, String writer, LocalDateTime writeDate, int count) {
+    private String content;
+
+    public Notice(String title, String writer, LocalDateTime writeDate, int count, String content) {
         this.title = title;
         this.writer = writer;
         this.writeDate = writeDate;
         this.count = count;
+        this.content = content;
     }
 }

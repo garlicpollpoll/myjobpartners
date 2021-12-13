@@ -5,4 +5,10 @@
 .field-error {
     width: 100%;
     height: 30px;
+    color: red;
+}
+
+.write-footer {
+    text-align: right;
+    margin-top: 50px;
 }

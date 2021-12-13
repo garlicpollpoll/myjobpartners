@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/index/navbar.css">
     <link rel="stylesheet" href="/css/index/header.css">
     <link rel="stylesheet" href="/css/index/footer.css">
+    <link rel="stylesheet" href="/css/board/write.css">
     <script src="/js/bootstrap.js"></script>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/summernote/summernote-lite.css">
@@ -35,22 +36,77 @@
             <div class="field-error">
                 <p th:errors="*{title}">필드에러</p>
             </div>
+
+            <input type="file" id="file">
+
+            <div>
+                <button type="button" class="btn btn-primary" id="btn-save">저장</button>
+            </div>
+
             <textarea class="summernote" name="content"></textarea>
+            <div class="write-footer">
+                <input type="submit" value="작성하기" class="btn btn-dark">
+            </div>
         </form>
     </div>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
 
-<script>
+<script type="text/javascript">
+    $('#btn-save').on('click', uploadImage);
+
+    function uploadImage() {
+        var file = $('#file')[0].files[0];
+        var formData = new FormData();
+        formData.append('data', file);
+
+        $.ajax({
+            type: "POST",
+            url: "/upload",
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (data) {
+            $('#result-image').attr("src", data);
+        }).fail(function (error) {
+            alert(error);
+        })
+    }
+
+
     $(document).ready(function() {
         $('.summernote').summernote({
             height: 500,
             minHeight: null,
             maxHeight: null,
             focus: true,
-            lang: "ko-KR"
+            lang: "ko-KR",
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    for (var i = files.length - 1 ; i>=0 ; i--) {
+                        sendFile(files[i], this);
+                    }
+                }
+            }
         })
+
+        function sendFile(file, el) {
+            var data = new FormData();
+            data.append('data', file);
+
+            $.ajax({
+                url: "/upload",
+                data: data,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function(data) {
+                    $(el).summernote('editor.insertImage', data);
+                }
+            })
+        }
     })
 </script>
 </body>
