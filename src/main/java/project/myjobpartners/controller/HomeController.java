@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import project.myjobpartners.dto.form.AgreementForm;
 import project.myjobpartners.dto.form.JoinForm;
 import project.myjobpartners.dto.form.LoginForm;
+import project.myjobpartners.dto.form.WriteForm;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,6 +39,35 @@ public class HomeController {
     @GetMapping("/contracting")
     public String contracting() {
         return "business/contracting";
+    }
+
+    @GetMapping("/notice")
+    public String notice() {
+        return "board/notice";
+    }
+
+    @GetMapping("/info")
+    public String info() {
+        return "board/info";
+    }
+
+    @GetMapping("/inquiry")
+    public String inquiry() {
+        return "board/inquiry";
+    }
+
+    @GetMapping("/write")
+    public String write(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        String email = (String) session.getAttribute("email");
+
+        if (email == null) {
+            return "redirect:/notice";
+        }
+
+        WriteForm write = new WriteForm();
+        model.addAttribute("write", write);
+        return "board/write";
     }
 
     @GetMapping("/join")

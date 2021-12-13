@@ -20,16 +20,19 @@ public class Member {
     private String password;
     private String name;
 
-    private String residentNum;
+    private String birth;
+
+    private String gender;
 
     @Enumerated(EnumType.STRING)
-    private DType gender;
+    private DType dtype;
 
-    public Member(String email, String password, String name, String residentNum, DType gender) {
+    public Member(String email, String password, String name, String birth, DType dtype, String gender) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.residentNum = residentNum;
+        this.birth = birth;
+        this.dtype = dtype;
         this.gender = gender;
     }
 }

@@ -222,7 +222,7 @@
             <p>확인 후 바로 답변 드리겠습니다.</p>
         </div>
         <div class="counseling-form-inner">
-            <form action="/counseling" method="post">
+            <form action="/counselling" method="post">
                 <div class="name">
                     <p>이름</p>
                     <input type="text" name="name" class="form-control" placeholder="이름">
@@ -235,7 +235,26 @@
                     <p>내용</p>
                     <textarea name="content" class="form-control"></textarea>
                 </div>
-                <input type="submit" value="전송" class="btn btn-secondary">
+                <a class="btn btn-secondary" data-bs-target="#myModal" data-bs-toggle="modal">전송</a>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">이메일 보내기</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                작성하신 내용으로 이메일을 보내시겠습니까? 답장은 2~3일 내로 보내드리겠습니다. 감사합니다.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                <input type="submit" class="btn btn-primary" value="전송">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

@@ -1,11 +1,17 @@
 .join {
     width: 100%;
-    height: 700px;
+    height: 800px;
     background-color: #f5f6f7;
 }
 
 .join p {
     margin: 0;
+}
+
+.field-error {
+    width: 100%;
+    height: 30px;
+    color: red;
 }
 
 .join-form {
@@ -25,19 +31,6 @@
     font-weight: 600;
 }
 
-.col-md-2, .col-md-3, .col-md-6, .col-md-1 {
-    display: inline-block;
-}
-
-.col-md-3 {
-    font-size: 22px;
-    height: 38px;
-}
-
-.col-md-1 {
-    padding-left: 9px;
-}
-
 .form-control {
     margin: 0;
 }
@@ -45,15 +38,5 @@
 @media screen and (max-width: 992px) {
     .join-form {
         width: 100%;
-    }
-
-    .col-md-3 {
-        font-size: 18px;
-    }
-}
-
-@media screen and (max-width: 445px) {
-    .col-md-6 {
-        width: 50%;
     }
 }

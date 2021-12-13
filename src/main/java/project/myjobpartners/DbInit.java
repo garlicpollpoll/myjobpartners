@@ -16,6 +16,6 @@ public class DbInit {
 
     @PostConstruct
     public void init() {
-        memberRepository.save(new Member("kyoungsuk3254@naver.com", "ks32541007!", "경석", "981007-1", DType.ADMIN));
+        memberRepository.save(new Member("kyoungsuk3254@naver.com", "ks32541007!", "경석", "981007", DType.ADMIN, "남자"));
     }
 }

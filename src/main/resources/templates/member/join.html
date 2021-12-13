@@ -14,7 +14,7 @@
     <title>마이잡파트너스</title>
 
     <style>
-        .field-error {
+        .error {
             border-color: red;
             color: red;
         }
@@ -34,39 +34,39 @@
             </div>
             <form action="/join" method="post" th:object="${join}">
                 <p>이메일</p>
-                <input type="text" name="email" th:field="*{email}" th:errorclass="field-error" placeholder="이메일" class="form-control">
+                <input type="text" name="email" th:field="*{email}" th:errorclass="error" placeholder="이메일" class="form-control">
                 <div class="field-error">
                     <p th:errors="*{email}"></p>
                 </div>
                 <p>비밀번호</p>
-                <input type="password" name="password" th:field="*{password}" th:errorclass="field-error" placeholder="비밀번호" class="form-control">
+                <input type="password" name="password" th:field="*{password}" th:errorclass="error" placeholder="비밀번호" class="form-control">
                 <div class="field-error">
                     <p th:errors="*{password}"></p>
                 </div>
                 <p>비밀번호 확인</p>
-                <input type="password" name="passwordCheck" th:field="*{passwordCheck}" th:errorclass="field-error" placeholder="비밀번호 확인" class="form-control">
+                <input type="password" name="passwordCheck" th:field="*{passwordCheck}" th:errorclass="error" placeholder="비밀번호 확인" class="form-control">
                 <div class="field-error">
                     <p th:errors="*{passwordCheck}"></p>
                 </div>
                 <p>이름</p>
-                <input type="text" name="name" th:field="*{name}" th:errorclass="field-error" class="form-control" placeholder="이름">
+                <input type="text" name="name" th:field="*{name}" th:errorclass="error" class="form-control" placeholder="이름">
                 <div class="field-error">
                     <p th:errors="*{name}"></p>
                 </div>
                 <p>생년월일</p>
-                <div class="birth col-md-6">
-                    <input type="text" name="birth" th:field="*{birth}" th:errorclass="field-error" class="form-control" placeholder="생년월일">
-                </div><div class="col-md-1">
-                    -
-                </div><div class="gender col-md-2">
-                    <input type="password" name="gender" th:field="*{gender}" th:errorclass="field-error" class="form-control" style="width: 40px;">
-                </div><div class="col-md-3">
-                    ******
+                <div class="birth">
+                    <input type="text" name="birth" th:field="*{birth}" th:errorclass="error" class="form-control" placeholder="생년월일" maxlength="6">
                 </div>
                 <div class="field-error">
                     <p th:errors="*{birth}"></p>
                 </div>
 
+                <p>성별</p>
+                <input type="radio" name="gender" value="남자" th:field="*{gender}" th:errorclass="error" id="male"> <label for="male">남자</label> <br>
+                <input type="radio" name="gender" value="여자" th:field="*{gender}" th:errorclass="error" id="female"> <label for="female">여자</label>
+                <div class="field-error">
+                    <p th:errors="*{gender}"></p>
+                </div>
                 <div class="join-form-footer d-grid gap-2">
                     <input type="submit" value="가입하기" class="btn btn-dark">
                 </div>

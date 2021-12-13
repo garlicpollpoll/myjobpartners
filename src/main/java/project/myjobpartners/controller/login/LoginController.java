@@ -12,6 +12,7 @@ import project.myjobpartners.entity.Member;
 import project.myjobpartners.repository.MemberRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,7 +22,8 @@ public class LoginController {
     private final MemberRepository memberRepository;
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("login")LoginForm form, BindingResult bindingResult) {
+    public String login(@Validated @ModelAttribute("login")LoginForm form, BindingResult bindingResult,
+                        HttpServletRequest request) {
         LoginForm login = new LoginForm();
         login.setEmail(form.getEmail());
         login.setPassword(form.getPassword());
@@ -37,6 +39,10 @@ public class LoginController {
             bindingResult.reject("notFound");
             return "member/login";
         }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("email", form.getEmail());
+
         return "redirect:/";
     }
 }

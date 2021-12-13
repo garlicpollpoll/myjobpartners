@@ -7,4 +7,6 @@ import project.myjobpartners.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findMemberByEmailAndPassword(String email, String password);
+
+    Member findMemberByEmail(String email);
 }
