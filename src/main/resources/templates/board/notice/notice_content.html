@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index/navbar.css">
+    <link rel="stylesheet" href="/css/index/header.css">
+    <link rel="stylesheet" href="/css/index/footer.css">
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <title>마이잡파트너스</title>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/mini_header :: mini_header"></div>
+
+<div class="content-wrap">
+    <div class="container">
+        <div class="upload" th:each="upload : ${uploadFile}">
+            <a th:href="|${upload.uploadFilename}|" th:text="${upload.originalFileName}">첨부파일</a>
+        </div>
+
+        <div class="content-inner">
+            <p th:value="${notice.content}"></p>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

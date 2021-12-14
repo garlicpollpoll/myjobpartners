@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,16 +19,22 @@ public class Notice {
 
     private String title;
     private String writer;
-    private LocalDateTime writeDate;
+    private String writeDate;
     private int count;
 
     private String content;
 
-    public Notice(String title, String writer, LocalDateTime writeDate, int count, String content) {
+    @OneToMany(mappedBy = "notice")
+    private List<UploadFile> uploadFiles;
+
+    private int notice;
+
+    public Notice(String title, String writer, String writeDate, int count, String content, int notice) {
         this.title = title;
         this.writer = writer;
         this.writeDate = writeDate;
         this.count = count;
         this.content = content;
+        this.notice = notice;
     }
 }

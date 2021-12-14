@@ -10,7 +10,6 @@ import project.myjobpartners.dto.form.LoginForm;
 import project.myjobpartners.dto.form.WriteForm;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,11 +40,6 @@ public class HomeController {
         return "business/contracting";
     }
 
-    @GetMapping("/notice")
-    public String notice() {
-        return "board/notice";
-    }
-
     @GetMapping("/info")
     public String info() {
         return "board/info";
@@ -56,11 +50,11 @@ public class HomeController {
         return "board/inquiry";
     }
 
-    @GetMapping("/write")
+    @GetMapping("/notice_write")
     public String write(Model model, HttpServletRequest request) {
         WriteForm write = new WriteForm();
         model.addAttribute("write", write);
-        return "board/write";
+        return "board/notice/notice_write";
     }
 
     @GetMapping("/join")

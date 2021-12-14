@@ -31,21 +31,19 @@
 
 <div class="write-wrap">
     <div class="container">
-        <form action="/write" method="post" th:object="${write}">
+        <form action="/notice_write" method="post" th:object="${write}" enctype="multipart/form-data">
             <input type="text" name="title" class="form-control" th:errorclass="error" th:field="*{title}" placeholder="제목">
             <div class="field-error">
                 <p th:errors="*{title}">필드에러</p>
             </div>
 
-            <input type="file" id="file">
-
             <div>
-                <button type="button" class="btn btn-primary" id="btn-save">저장</button>
+                <input type="file" name="file" multiple="multiple">
             </div>
 
             <textarea class="summernote" name="content"></textarea>
             <div class="write-footer">
-                <input type="submit" value="작성하기" class="btn btn-dark">
+                <input type="submit" value="작성하기" class="btn btn-dark" id="btn-save">
             </div>
         </form>
     </div>
@@ -54,25 +52,25 @@
 <div th:replace="fragments/footer :: footer"></div>
 
 <script type="text/javascript">
-    $('#btn-save').on('click', uploadImage);
-
-    function uploadImage() {
-        var file = $('#file')[0].files[0];
-        var formData = new FormData();
-        formData.append('data', file);
-
-        $.ajax({
-            type: "POST",
-            url: "/upload",
-            data: formData,
-            processData: false,
-            contentType: false
-        }).done(function (data) {
-            $('#result-image').attr("src", data);
-        }).fail(function (error) {
-            alert(error);
-        })
-    }
+    // $('#btn-save').on('click', uploadImage);
+    //
+    // function uploadImage() {
+    //     var file = $('#file')[0].files[0];
+    //     var formData = new FormData();
+    //     formData.append('data', file);
+    //
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/upload",
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false
+    //     }).done(function (data) {
+    //         $('#result-image').attr("src", data);
+    //     }).fail(function (error) {
+    //         alert(error);
+    //     })
+    // }
 
 
     $(document).ready(function() {

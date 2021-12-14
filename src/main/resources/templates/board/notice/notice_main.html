@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index/navbar.css">
+    <link rel="stylesheet" href="/css/index/header.css">
+    <link rel="stylesheet" href="/css/index/footer.css">
+    <link rel="stylesheet" href="/css/board/board.css">
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <title>마이잡파트너스</title>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/mini_header :: mini_header"></div>
+
+<div class="container">
+    <div class="table-wrap">
+        <div>
+            <h2>공지사항</h2>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col" class="number">No</th>
+                <th scope="col" class="title" id="thead-title">제목</th>
+                <th scope="col" class="writer">글쓴이</th>
+                <th scope="col" class="write-date">작성시간</th>
+                <th scope="col" class="count">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board : ${board}" th:classappend="${board.notice} == '1' ? 'top-notice'">
+                    <td th:text="${board.id}" class="number">No</td>
+                    <td class="title"><a th:text="${board.title}" th:href="@{/notice_content/{contentId}(contentId = ${board.id})}">제목</a></td>
+                    <td th:text="${board.writer}" class="writer">글쓴이</td>
+                    <td th:text="${board.writeDate}" class="write-date">작성시간</td>
+                    <td th:text="${board.count}" class="count">조회수</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="page">
+            <a href="/notice/?page=1"><<</a>
+            <a th:each="page : ${pageCount}" th:href="@{/notice/(page=${page.value})}" th:text="${page.value}">page</a>
+            <a th:href="@{/notice/(page=${lastPage})}">>></a>
+        </div>
+    </div>
+    <div class="hidden-notice">
+        <h5>공지사항</h5>
+    </div>
+    <div class="board-footer">
+        <a class="btn btn-primary" href="/notice_write">글쓰기</a><!-- 개발용 -->
+        <button class="btn btn-dark" type="button" id="write">글쓰기</button>
+    </div>
+</div>
+
+<div class="mini-notice">
+    <div th:each="mini : ${board}" class="mini-notice-info">
+        <a class="mini-title" th:href="@{/notice_content/{contentId}(contentId = ${mini.id})}">
+            <p th:text="${mini.title}">제목</p>
+            <p th:text="${mini.writer}" class="content-info"></p>
+            <p th:text="${mini.writeDate}" class="content-info"></p>
+            <p class="content-info">조회수</p>
+            <p th:text="${mini.count}" class="content-info"></p>
+        </a>
+    </div>
+    <div class="page">
+        <a href="/notice/?page=1"><<</a>
+        <a th:each="page : ${pageCount}" th:href="@{/notice/(page=${page.value})}" th:text="${page.value}">page</a>
+        <a th:href="@{/notice/(page=${lastPage})}">>></a>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script type="text/javascript">
+    $(document).ready(function (){
+        const write = document.getElementById('write');
+
+        write.addEventListener('click', () =>{
+            var email = '[[${session.email}]]';
+            if (email == "") {
+                alert('로그인 후 이용해주세요');
+                location.href = "/notice";
+            }
+            else {
+                location.href = "/notice_write";
+            }
+        });
+    })
+</script>
+</body>
+</html>
