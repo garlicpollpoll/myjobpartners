@@ -24,10 +24,9 @@ public class Member {
 
     private String gender;
 
-    @Enumerated(EnumType.STRING)
-    private DType dtype;
+    private String dtype;
 
-    public Member(String email, String password, String name, String birth, DType dtype, String gender) {
+    public Member(String email, String password, String name, String birth, String dtype, String gender) {
         this.email = email;
         this.password = password;
         this.name = name;

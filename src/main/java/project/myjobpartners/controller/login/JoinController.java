@@ -31,7 +31,7 @@ public class JoinController {
             return "member/join";
         }
 
-        Member member = new Member(form.getEmail(), form.getPassword(), form.getName(), form.getBirth(), DType.GUEST, form.getGender());
+        Member member = new Member(form.getEmail(), form.getPassword(), form.getName(), form.getBirth(), "GUEST", form.getGender());
 
         memberRepository.save(member);
 

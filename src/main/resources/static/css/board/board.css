@@ -62,8 +62,8 @@
     }
 
     .mini-notice-info {
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
+        border-top: 1px solid #aaa;
+        border-bottom: 1px solid #aaa;
         padding: 20px;
     }
 
@@ -94,5 +94,9 @@
 
     .page {
         margin-bottom: 30px;
+    }
+
+    .top-notice {
+        background-color: #ddd;
     }
 }

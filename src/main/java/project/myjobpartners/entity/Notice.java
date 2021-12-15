@@ -18,23 +18,31 @@ public class Notice {
     private Long id;
 
     private String title;
-    private String writer;
     private String writeDate;
     private int count;
 
+    @Lob
     private String content;
 
     @OneToMany(mappedBy = "notice")
     private List<UploadFile> uploadFiles;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     private int notice;
 
-    public Notice(String title, String writer, String writeDate, int count, String content, int notice) {
+    public Notice(Member member, String title, String writer, String writeDate, int count, String content, int notice) {
         this.title = title;
-        this.writer = writer;
         this.writeDate = writeDate;
         this.count = count;
         this.content = content;
         this.notice = notice;
+        this.member = member;
+    }
+
+    public void addCount() {
+        this.count += 1;
     }
 }

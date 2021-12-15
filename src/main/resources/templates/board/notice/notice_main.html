@@ -37,8 +37,12 @@
             <tbody>
                 <tr th:each="board : ${board}" th:classappend="${board.notice} == '1' ? 'top-notice'">
                     <td th:text="${board.id}" class="number">No</td>
-                    <td class="title"><a th:text="${board.title}" th:href="@{/notice_content/{contentId}(contentId = ${board.id})}">제목</a></td>
-                    <td th:text="${board.writer}" class="writer">글쓴이</td>
+                    <td class="title">
+                        <a th:text="${board.title}" th:href="@{/notice_content/{contentId}(contentId = ${board.id})}">
+                            제목
+                        </a>
+                    </td>
+                    <td th:text="${board.member.name}" class="writer">글쓴이</td>
                     <td th:text="${board.writeDate}" class="write-date">작성시간</td>
                     <td th:text="${board.count}" class="count">조회수</td>
                 </tr>
@@ -60,10 +64,10 @@
 </div>
 
 <div class="mini-notice">
-    <div th:each="mini : ${board}" class="mini-notice-info">
+    <div th:each="mini : ${board}" class="mini-notice-info" th:classappend="${mini.notice} == 1 ? 'top-notice'">
         <a class="mini-title" th:href="@{/notice_content/{contentId}(contentId = ${mini.id})}">
             <p th:text="${mini.title}">제목</p>
-            <p th:text="${mini.writer}" class="content-info"></p>
+            <p th:text="${mini.member.name}" class="content-info"></p>
             <p th:text="${mini.writeDate}" class="content-info"></p>
             <p class="content-info">조회수</p>
             <p th:text="${mini.count}" class="content-info"></p>
@@ -83,12 +87,18 @@
         const write = document.getElementById('write');
 
         write.addEventListener('click', () =>{
-            var email = '[[${session.email}]]';
+            var dtype = '[[${session.dtype}]]'
+            var email = '[[${session.email}]]'
             if (email == "") {
-                alert('로그인 후 이용해주세요');
+                alert('로그인을 진행해주십시오.');
                 location.href = "/notice";
             }
-            else {
+
+            if (dtype == "GUEST") {
+                alert('글쓰기 권한이 없습니다.');
+                location.href = "/notice";
+            }
+            else if (dtype == "ADMIN") {
                 location.href = "/notice_write";
             }
         });

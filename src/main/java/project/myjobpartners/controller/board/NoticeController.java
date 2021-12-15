@@ -13,11 +13,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import project.myjobpartners.dto.form.CommentForm;
 import project.myjobpartners.dto.form.WriteForm;
 import project.myjobpartners.entity.Member;
 import project.myjobpartners.entity.Notice;
+import project.myjobpartners.entity.NoticeComment;
 import project.myjobpartners.entity.UploadFile;
 import project.myjobpartners.repository.MemberRepository;
+import project.myjobpartners.repository.NoticeCommentRepository;
 import project.myjobpartners.repository.NoticeRepository;
 import project.myjobpartners.repository.UploadFileRepository;
 import project.myjobpartners.s3.S3Uploader;
@@ -39,6 +42,7 @@ public class NoticeController {
     private final MemberRepository memberRepository;
     private final UploadFileRepository uploadFileRepository;
     private final S3Uploader s3Uploader;
+    private final NoticeCommentRepository noticeCommentRepository;
 
     @GetMapping("/notice")
     public String notice(Model model, @RequestParam(value = "page", defaultValue = "0")Integer pageNow) {
@@ -101,7 +105,7 @@ public class NoticeController {
                         HttpServletRequest request, MultipartHttpServletRequest mtRequest) throws IOException {
         List<MultipartFile> uploadFile = mtRequest.getFiles("file");
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         String email = (String) session.getAttribute("email");
         Member findMember = memberRepository.findMemberByEmail(email);
 
@@ -116,17 +120,18 @@ public class NoticeController {
         String now = LocalDateTime.now().toString();
         String substring = now.substring(0, 10);
 
-        Notice notice = new Notice(form.getTitle(), findMember.getName(), substring, 0, form.getContent(), 0);
+        Notice notice = new Notice(findMember, form.getTitle(), findMember.getName(), substring, 0, form.getContent(), 0);
         noticeRepository.save(notice);
 
         if (!uploadFile.isEmpty()) {
             for (MultipartFile multipartFile : uploadFile) {
-                String originalFilename = multipartFile.getOriginalFilename();
-                log.info("여기뭐야");
-                String s3UploadFile = s3Uploader.upload(multipartFile, "static");
-                UploadFile file = new UploadFile(originalFilename, s3UploadFile, notice);
-                uploadFileRepository.save(file);
-                log.info("success");
+                if (!multipartFile.getOriginalFilename().equals("")) {
+                    String originalFilename = multipartFile.getOriginalFilename();
+                    String s3UploadFile = s3Uploader.upload(multipartFile, "static");
+                    UploadFile file = new UploadFile(originalFilename, s3UploadFile, notice);
+                    uploadFileRepository.save(file);
+                    log.info("success");
+                }
             }
         }
 
@@ -136,11 +141,16 @@ public class NoticeController {
     @GetMapping("/notice_content/{contentId}")
     public String noticeContent(@PathVariable("contentId")Long contentId, Model model) {
         Notice findNotice = noticeRepository.findByNoticeId(contentId);
+        List<NoticeComment> noticeComment = noticeCommentRepository.findNoticeComment(contentId);
 
         List<UploadFile> uploadFiles = findNotice.getUploadFiles();
 
+        CommentForm comment = new CommentForm();
+
+        model.addAttribute("comment", comment);
         model.addAttribute("notice", findNotice);
         model.addAttribute("uploadFile", uploadFiles);
+        model.addAttribute("noticeComment", noticeComment);
 
         return "board/notice/notice_content";
     }

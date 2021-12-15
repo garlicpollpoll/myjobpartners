@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.myjobpartners.dto.form.LoginForm;
@@ -42,6 +43,15 @@ public class LoginController {
 
         HttpSession session = request.getSession();
         session.setAttribute("email", form.getEmail());
+        session.setAttribute("dtype", findMember.getDtype());
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
 
         return "redirect:/";
     }

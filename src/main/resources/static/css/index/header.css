@@ -31,6 +31,10 @@
     display: none;
 }
 
+/* renew */
+.renew-mini-header {
+    display: none;
+}
 
 
 @media screen and (max-width: 992px){
@@ -54,6 +58,26 @@
         border: skyblue 1px solid;
         padding-top: 10px;
     }
+
+    /* renew */
+    .renew-mini-header {
+        display: inline;
+        text-align: center;
+        font-size: 14px;
+        font-family: NanumSquare;
+        color: gray;
+    }
+
+    .renew-mini-header ul {
+        padding: 30px;
+        margin: 0;
+        border-bottom: 1px solid #e7e7e7;
+    }
+
+    .renew-mini-header li {
+        display: inline-block;
+        margin-right: 20px;
+    }
 }
 
 /* mini-header */
@@ -61,5 +85,5 @@
     width: 50%;
     height: 50px;
     text-align: center;
-    display: inline-block;
+    display: none;
 }

@@ -1,0 +1,39 @@
+img {
+    max-width: 100%;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.content-wrap {
+    width: 100%;
+    height: 100%;
+    margin-top: 100px;
+}
+
+.notice-info {
+    display: inline-block;
+    color: #aaa;
+    margin-right: 10px;
+}
+
+.notice-writer {
+    padding: 20px 0;
+    border-bottom: 1px solid #aaa;
+}
+
+.notice-writer p:nth-child(1) {
+    margin-top: 20px;
+}
+
+.attach-file {
+    border-bottom: 1px solid #aaa;
+    padding: 20px;
+}
+
+.content-inner {
+    padding: 30px 0;
+    width: 100%;
+    height: 100%;
+}
