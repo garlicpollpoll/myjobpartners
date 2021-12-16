@@ -37,3 +37,32 @@ p {
     width: 100%;
     height: 100%;
 }
+
+.notice-comment {
+    font-family: NanumSquare;
+    padding: 20px;
+    font-size: 14px;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 50px;
+    margin-top: 30px;
+}
+
+.notice-comment-footer {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: right;
+}
+
+.notice-rewrite {
+    padding: 20px;
+    text-align: right;
+}
+
+.notice-rewrite a {
+    margin-left: 20px;
+}
+
+.admin-only {
+    text-align: right;
+}

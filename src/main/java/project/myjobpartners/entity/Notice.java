@@ -45,4 +45,12 @@ public class Notice {
     public void addCount() {
         this.count += 1;
     }
+
+    public void makeNotice() {
+        this.notice = 1;
+    }
+
+    public void cancelNotice() {
+        this.notice = 0;
+    }
 }

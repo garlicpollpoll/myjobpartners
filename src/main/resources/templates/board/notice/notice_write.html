@@ -41,7 +41,7 @@
                 <input type="file" name="file" multiple="multiple">
             </div>
 
-            <textarea class="summernote" name="content"></textarea>
+            <textarea class="summernote" name="content" th:field="*{content}"></textarea>
             <div class="write-footer">
                 <input type="submit" value="작성하기" class="btn btn-dark" id="btn-save">
             </div>
