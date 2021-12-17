@@ -31,6 +31,10 @@ dependencies {
 	//aws S3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
 
+	//file upload
+	implementation 'commons-fileupload:commons-fileupload:1.2'
+	implementation 'commons-io:commons-io:2.6'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'

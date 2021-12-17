@@ -38,7 +38,8 @@
         <div class="attach-file">
             <p>첨부파일</p>
             <div class="upload" th:each="upload : ${uploadFile}">
-                <a th:href="|${upload.uploadFilename}|" th:text="${upload.originalFileName}">첨부파일</a>
+                <a th:href="@{/attach(upload = ${upload.originalFileName})}" th:text="${upload.originalFileName}">첨부파일</a>
+<!--                <a th:href="@{/attach(upload = ${upload.id})}" th:text="${upload.originalFileName}">첨부파일</a>-->
             </div>
         </div>
 

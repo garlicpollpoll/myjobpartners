@@ -1,7 +1,10 @@
 package project.myjobpartners.controller.board;
 
+import ch.qos.logback.core.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +31,9 @@ import project.myjobpartners.repository.UploadFileRepository;
 import project.myjobpartners.s3.S3Uploader;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
@@ -110,7 +115,7 @@ public class NoticeController {
                         HttpServletRequest request, MultipartHttpServletRequest mtRequest) throws IOException {
         List<MultipartFile> uploadFile = mtRequest.getFiles("file");
 
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         Member findMember = memberRepository.findMemberByEmail(email);
 
@@ -155,26 +160,17 @@ public class NoticeController {
 
         CommentForm comment = new CommentForm();
 
-//        String[] array = new String[uploadFiles.size()];
-//        List<UrlResource> list = new ArrayList<>();
-//
-//        for (int i = 0; i < uploadFiles.size(); i++) {
-//            UploadFile file = uploadFiles.get(i);
-//            String encodeUploadFileName = UriUtils.encode(file.getUploadFilename(), StandardCharsets.UTF_8);
-//            String contentDisposition = "attachment; filename=\"" + encodeUploadFileName + "\"";
-//            array[i] = contentDisposition;
-//            list.add(new UrlResource(file.getUploadFilename()));
-//        }
-
         model.addAttribute("comment", comment);
         model.addAttribute("notice", findNotice);
         model.addAttribute("uploadFile", uploadFiles);
         model.addAttribute("noticeComment", noticeComment);
 
         return "board/notice/notice_content";
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, array)
-//                .body(list);
+    }
+
+    @GetMapping("/attach")
+    public ResponseEntity<byte[]> attach(@RequestParam("upload") String upload) throws IOException {
+        return s3Uploader.download(upload);
     }
 
     @GetMapping("/notice_delete/{contentId}")
@@ -196,12 +192,58 @@ public class NoticeController {
     }
 
     @GetMapping("/notice_rewrite/{contentId}")
-    public String rewrite(@PathVariable("contentId") Long id, Model model) {
+    public String rewrite(@PathVariable("contentId") Long id, Model model, HttpServletRequest request) {
         Notice findNotice = noticeRepository.findByNoticeId(id);
 
         model.addAttribute("write", findNotice);
 
-        return "board/notice/notice_write";
+        HttpSession session = request.getSession();
+        session.setAttribute("contentId", id);
+
+        return "board/notice/notice_rewrite";
+    }
+
+    @PostMapping("/notice_rewrite")
+    @Transactional
+    public String rewrite(@Validated @ModelAttribute("write") WriteForm form, BindingResult bindingResult,
+                          HttpServletRequest request, MultipartHttpServletRequest mtRequest) throws IOException {
+        List<MultipartFile> uploadFile = mtRequest.getFiles("file");
+
+        WriteForm write = new WriteForm();
+        write.setTitle(form.getTitle());
+        write.setContent(form.getContent());
+
+        HttpSession session = request.getSession();
+        Long contentId = (Long) session.getAttribute("contentId");
+
+        if (bindingResult.hasErrors()) {
+            return "board/notice/notice_rewrite";
+        }
+
+        Notice findNotice = noticeRepository.findByNoticeId(contentId);
+        List<UploadFile> findUploadFile = uploadFileRepository.findAllUploadFile(contentId);
+
+        findNotice.setTitle(form.getTitle());
+        findNotice.setContent(form.getContent());
+
+        for (int i = 0; i < findUploadFile.size(); i++) {
+            UploadFile file = findUploadFile.get(i);
+            uploadFileRepository.delete(file);
+        }
+
+        if (!uploadFile.isEmpty()) {
+            for (MultipartFile multipartFile : uploadFile) {
+                if (!multipartFile.getOriginalFilename().equals("")) {
+                    String originalFilename = multipartFile.getOriginalFilename();
+                    String s3UploadFile = s3Uploader.upload(multipartFile, "static");
+                    UploadFile file = new UploadFile(originalFilename, s3UploadFile, findNotice);
+                    uploadFileRepository.save(file);
+                    log.info("success");
+                }
+            }
+        }
+
+        return "redirect:/notice";
     }
 
     @GetMapping("/notice_top/{contentId}")
