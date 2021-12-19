@@ -11,8 +11,11 @@ import java.util.List;
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
-    @Query("select n from Notice n join fetch n.member m order by n.notice desc, n.id desc")
+    @Query("select n from Notice n join fetch n.member m order by n.id desc")
     List<Notice> findAllContent(Pageable pageable);
+
+    @Query("select n from Notice n join fetch n.member m where n.notice = :notice order by n.id desc")
+    List<Notice> findAllNoticeTop(@Param("notice") int notice);
 
     @Query("select n from Notice n where n.id = :noticeId")
     Notice findByNoticeId(@Param("noticeId") Long noticeId);

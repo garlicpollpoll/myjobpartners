@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index/navbar.css">
+    <link rel="stylesheet" href="/css/index/header.css">
+    <link rel="stylesheet" href="/css/index/footer.css">
+    <link rel="stylesheet" href="/css/board/write.css">
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/css/summernote/summernote-lite.css">
+    <script src="/js/summernote-lite.js"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+    <title>마이잡파트너스</title>
+
+    <style>
+        .error {
+            border-color: red;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/mini_header :: mini_header"></div>
+
+<div class="write-wrap">
+    <div class="container">
+        <form action="/info_rewrite" method="post" th:object="${write}" enctype="multipart/form-data">
+            <input type="text" name="title" class="form-control" th:errorclass="error" th:field="*{title}" placeholder="제목">
+            <div class="field-error">
+                <p th:errors="*{title}">필드에러</p>
+            </div>
+
+            <div>
+                <input type="file" name="file" multiple="multiple">
+            </div>
+
+            <textarea class="summernote" name="content" th:field="*{content}"></textarea>
+            <div class="write-footer">
+                <input type="submit" value="작성하기" class="btn btn-dark" id="btn-save">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script type="text/javascript">
+    // $('#btn-save').on('click', uploadImage);
+    //
+    // function uploadImage() {
+    //     var file = $('#file')[0].files[0];
+    //     var formData = new FormData();
+    //     formData.append('data', file);
+    //
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/upload",
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false
+    //     }).done(function (data) {
+    //         $('#result-image').attr("src", data);
+    //     }).fail(function (error) {
+    //         alert(error);
+    //     })
+    // }
+
+
+    $(document).ready(function() {
+        $('.summernote').summernote({
+            height: 500,
+            minHeight: null,
+            maxHeight: null,
+            focus: true,
+            lang: "ko-KR",
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    for (var i = files.length - 1 ; i>=0 ; i--) {
+                        sendFile(files[i], this);
+                    }
+                }
+            }
+        })
+
+        function sendFile(file, el) {
+            var data = new FormData();
+            data.append('data', file);
+
+            $.ajax({
+                url: "/upload",
+                data: data,
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+                success: function(data) {
+                    $(el).summernote('editor.insertImage', data);
+                }
+            })
+        }
+    })
+</script>
+</body>
+</html>

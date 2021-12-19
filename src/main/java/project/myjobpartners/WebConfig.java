@@ -3,6 +3,7 @@ package project.myjobpartners;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import project.myjobpartners.interceptor.InfoDeleteCheckInterceptor;
 import project.myjobpartners.interceptor.LoginCheckInterceptor;
 import project.myjobpartners.interceptor.NoticeDeleteCheckInterceptor;
 
@@ -17,6 +18,10 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new NoticeDeleteCheckInterceptor())
                 .order(2)
-                .addPathPatterns("/notice_delete/**");
+                .addPathPatterns("/notice_delete/**", "/notice_rewrite/**");
+
+        registry.addInterceptor(new InfoDeleteCheckInterceptor())
+                .order(3)
+                .addPathPatterns("/info_delete/**", "/info_rewrite/**");
     }
 }

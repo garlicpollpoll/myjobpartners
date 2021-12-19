@@ -28,6 +28,7 @@ public class CounselController {
 
         //수신 대상 추가
         toUserList.add("kyoungsuk3254@naver.com");
+        toUserList.add("hkl0612@naver.com");
 
         //수신 대상 개수
         int toUserSize = toUserList.size();

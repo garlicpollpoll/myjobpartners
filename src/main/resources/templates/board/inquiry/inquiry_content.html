@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" initial-scale=1>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/index/navbar.css">
+    <link rel="stylesheet" href="/css/index/header.css">
+    <link rel="stylesheet" href="/css/index/footer.css">
+    <link rel="stylesheet" href="/css/board/content.css">
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <title>마이잡파트너스</title>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/mini_header :: mini_header"></div>
+
+<div class="content-wrap">
+    <div class="container">
+        <h4 th:text="${notice.title}">제목</h4>
+
+        <div class="notice-writer">
+            <p th:text="${notice.member.name}">글쓴이</p>
+            <p class="notice-info">공지사항</p>
+            <p class="notice-info" th:text="${notice.writeDate}"></p>
+            <p class="notice-info">조회수</p>
+            <p class="notice-info" th:text="${notice.count}"></p>
+        </div>
+
+        <div class="attach-file">
+            <p>첨부파일</p>
+            <div class="upload" th:each="upload : ${uploadFile}">
+                <a th:href="@{/attach(upload = ${upload.originalFileName})}" th:text="${upload.originalFileName}">첨부파일</a>
+<!--                <a th:href="@{/attach(upload = ${upload.id})}" th:text="${upload.originalFileName}">첨부파일</a>-->
+            </div>
+        </div>
+
+        <div class="notice-rewrite" th:if="${session.dtype} == 'ADMIN'">
+            <a href="#" id="notice-delete">[삭제하기]</a>
+            <a href="#" id="notice-rewrite">[수정하기]</a>
+        </div>
+
+        <div class="content-inner">
+            <p th:utext="${notice.content}"></p>
+        </div>
+
+        <div class="notice-comment" th:each="comment : ${noticeComment}">
+            <p th:text="${comment.member.name}"></p>
+            <p th:text="${comment.writeDate}"></p>
+            <p th:text="${comment.comment}"></p>
+        </div>
+
+        <form th:action="@{/inquiry_comment/{contentId}(contentId = ${notice.id})}" method="post" th:object="${comment}">
+            <textarea class="form-control" name="comment" style="width: 100%; height: 150px;" th:errorclass="error" th:fieild="*{comment}"></textarea>
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지지</p>
+            </div>
+            <div class="notice-comment-footer">
+                <input type="submit" value="댓글달기" class="btn btn-dark">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script type="text/javascript">
+    $(document).ready(function (){
+        const noticeDelete = document.getElementById('notice-delete');
+        const noticeRewrite = document.getElementById('notice-rewrite');
+
+        noticeRewrite.addEventListener('click', ()=>{
+            var dtype = '[[${session.dtype}]]';
+            var email = '[[${session.email}]]';
+            var contentId = '[[${notice.id}]]';
+
+            if (email == "") {
+                alert('로그인후 이용해주세요');
+                $.ajax({
+                    url: "/inquiry",
+                    type: "GET"
+                })
+            }
+            else {
+                if (dtype == "GUEST") {
+                    alert('수정하기 권한이 없습니다.');
+                    $.ajax({
+                        url: /inquiry_content/ + contentId,
+                        type: "GET"
+                    })
+                }
+                else if (dtype == "ADMIN") {
+                    location.href = "/inquiry_rewrite/" + contentId;
+                }
+            }
+        })
+
+        noticeDelete.addEventListener('click', () =>{
+            var dtype = '[[${session.dtype}]]';
+            var email = '[[${session.email}]]';
+            var contentId = '[[${notice.id}]]';
+
+            if (email == "") {
+                alert('로그인후 이용해주세요');
+                $.ajax({
+                    url: /inquiry_content/ + contentId,
+                    type: "GET"
+                })
+            }
+            else {
+                if (dtype == "GUEST") {
+                    alert('삭제하기 권한이 없습니다.');
+                    $.ajax({
+                        url: /inquiry_content/ + contentId,
+                        type: "GET"
+                    })
+                }
+                else if (dtype == "ADMIN") {
+                    location.href = "/inquiry_delete/" + contentId;
+                }
+            }
+        })
+    })
+</script>
+
+</body>
+</html>

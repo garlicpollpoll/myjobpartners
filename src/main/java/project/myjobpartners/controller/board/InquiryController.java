@@ -1,13 +1,8 @@
 package project.myjobpartners.controller.board;
 
-import ch.qos.logback.core.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,28 +12,17 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.util.UriUtils;
 import project.myjobpartners.dto.form.CommentForm;
 import project.myjobpartners.dto.form.WriteForm;
-import project.myjobpartners.entity.Member;
-import project.myjobpartners.entity.Notice;
-import project.myjobpartners.entity.NoticeComment;
-import project.myjobpartners.entity.UploadFile;
-import project.myjobpartners.repository.MemberRepository;
-import project.myjobpartners.repository.NoticeCommentRepository;
-import project.myjobpartners.repository.NoticeRepository;
-import project.myjobpartners.repository.UploadFileRepository;
+import project.myjobpartners.entity.*;
+import project.myjobpartners.repository.*;
 import project.myjobpartners.s3.S3Uploader;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,30 +30,28 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class NoticeController {
+public class InquiryController {
 
-    private final NoticeRepository noticeRepository;
+    private final InquiryRepository inquiryRepository;
     private final MemberRepository memberRepository;
-    private final UploadFileRepository uploadFileRepository;
+    private final InquiryUploadFileRepository inquiryUploadFileRepository;
     private final S3Uploader s3Uploader;
-    private final NoticeCommentRepository noticeCommentRepository;
+    private final InquiryCommentRepository inquiryCommentRepository;
 
-    @GetMapping("/notice")
+    @GetMapping("/inquiry")
     public String notice(Model model, @RequestParam(value = "page", defaultValue = "0")Integer pageNow) {
         if (pageNow != 0) {
             pageNow -= 1;
         }
 
-        List<Notice> noticeTop = noticeRepository.findAllNoticeTop(1);
-        int noticeTopSize = noticeTop.size();
-        PageRequest pageable = PageRequest.of(pageNow, 10 - noticeTopSize);
-        List<Notice> findContents = noticeRepository.findAllContent(pageable);
+        PageRequest pageable = PageRequest.of(pageNow, 10);
+        List<Inquiry> findContents = inquiryRepository.findAllContent(pageable);
 
         pageNow += 1;
 
         long pageStart, pageEnd;
 
-        long size = noticeRepository.count();
+        long size = inquiryRepository.count();
 
         long totalPage = 0;
 
@@ -118,12 +100,11 @@ public class NoticeController {
         model.addAttribute("pageCount", map);
         model.addAttribute("lastPage", totalPage);
 
-        model.addAttribute("noticeTop", noticeTop);
         model.addAttribute("board", findContents);
-        return "board/notice/notice_main";
+        return "board/inquiry/inquiry_main";
     }
 
-    @PostMapping("/notice_write")
+    @PostMapping("/inquiry_write")
     public String write(@Validated @ModelAttribute("write")WriteForm form, BindingResult bindingResult,
                         HttpServletRequest request, MultipartHttpServletRequest mtRequest) throws IOException {
         List<MultipartFile> uploadFile = mtRequest.getFiles("file");
@@ -137,37 +118,37 @@ public class NoticeController {
         write.setContent(form.getContent());
 
         if (bindingResult.hasErrors()) {
-            return "board/notice/notice_write";
+            return "board/inquiry/inquiry_write";
         }
 
         String now = LocalDateTime.now().toString();
         String substring = now.substring(0, 10);
 
-        Notice notice = new Notice(findMember, form.getTitle(), findMember.getName(), substring, 0, form.getContent(), 0);
-        noticeRepository.save(notice);
+        Inquiry inquiry = new Inquiry(findMember, form.getTitle(), substring, 0, form.getContent());
+        inquiryRepository.save(inquiry);
 
         if (!uploadFile.isEmpty()) {
             for (MultipartFile multipartFile : uploadFile) {
                 if (!multipartFile.getOriginalFilename().equals("")) {
                     String originalFilename = multipartFile.getOriginalFilename();
                     String s3UploadFile = s3Uploader.upload(multipartFile, "static");
-                    UploadFile file = new UploadFile(originalFilename, s3UploadFile, notice);
-                    uploadFileRepository.save(file);
+                    InquiryUploadFile file = new InquiryUploadFile(originalFilename, s3UploadFile, inquiry);
+                    inquiryUploadFileRepository.save(file);
                     log.info("success");
                 }
             }
         }
 
-        return "redirect:/notice";
+        return "redirect:/inquiry";
     }
 
-    @GetMapping("/notice_content/{contentId}")
+    @GetMapping("/inquiry_content/{contentId}")
     @Transactional
     public String noticeContent(@PathVariable("contentId")Long contentId, Model model) throws MalformedURLException {
-        Notice findNotice = noticeRepository.findByNoticeId(contentId);
-        List<NoticeComment> noticeComment = noticeCommentRepository.findNoticeComment(contentId);
+        Inquiry findNotice = inquiryRepository.findByInquiryId(contentId);
+        List<InquiryComment> noticeComment = inquiryCommentRepository.findInquiryComment(contentId);
 
-        List<UploadFile> uploadFiles = findNotice.getUploadFiles();
+        List<InquiryUploadFile> uploadFiles = findNotice.getUploadFiles();
 
         findNotice.addCount();
 
@@ -178,45 +159,40 @@ public class NoticeController {
         model.addAttribute("uploadFile", uploadFiles);
         model.addAttribute("noticeComment", noticeComment);
 
-        return "board/notice/notice_content";
+        return "board/inquiry/inquiry_content";
     }
 
-    @GetMapping("/attach")
-    public ResponseEntity<byte[]> attach(@RequestParam("upload") String upload) throws IOException {
-        return s3Uploader.download(upload);
-    }
-
-    @GetMapping("/notice_delete/{contentId}")
+    @GetMapping("/inquiry_delete/{contentId}")
     public String delete(@PathVariable("contentId") Long id) {
-        Notice findNotice = noticeRepository.findByNoticeId(id);
-        List<NoticeComment> noticeComment = noticeCommentRepository.findNoticeComment(id);
-        List<UploadFile> allUploadFile = uploadFileRepository.findAllUploadFile(id);
+        Inquiry findNotice = inquiryRepository.findByInquiryId(id);
+        List<InquiryComment> noticeComment = inquiryCommentRepository.findInquiryComment(id);
+        List<InquiryUploadFile> allUploadFile = inquiryUploadFileRepository.findAllInquiryUploadFile(id);
         for (int i = 0; i < noticeComment.size(); i++) {
-            NoticeComment findNoticeComment = noticeComment.get(i);
-            noticeCommentRepository.delete(findNoticeComment);
+            InquiryComment findInquiryComment = noticeComment.get(i);
+            inquiryCommentRepository.delete(findInquiryComment);
         }
         for (int i = 0; i < allUploadFile.size(); i++) {
-            UploadFile file = allUploadFile.get(i);
-            uploadFileRepository.delete(file);
+            InquiryUploadFile file = allUploadFile.get(i);
+            inquiryUploadFileRepository.delete(file);
         }
-        noticeRepository.delete(findNotice);
+        inquiryRepository.delete(findNotice);
 
-        return "redirect:/notice";
+        return "redirect:/inquiry";
     }
 
-    @GetMapping("/notice_rewrite/{contentId}")
+    @GetMapping("/inquiry_rewrite/{contentId}")
     public String rewrite(@PathVariable("contentId") Long id, Model model, HttpServletRequest request) {
-        Notice findNotice = noticeRepository.findByNoticeId(id);
+        Inquiry findNotice = inquiryRepository.findByInquiryId(id);
 
         model.addAttribute("write", findNotice);
 
         HttpSession session = request.getSession();
         session.setAttribute("contentId", id);
 
-        return "board/notice/notice_rewrite";
+        return "board/inquiry/inquiry_rewrite";
     }
 
-    @PostMapping("/notice_rewrite")
+    @PostMapping("/inquiry_rewrite")
     @Transactional
     public String rewrite(@Validated @ModelAttribute("write") WriteForm form, BindingResult bindingResult,
                           HttpServletRequest request, MultipartHttpServletRequest mtRequest) throws IOException {
@@ -230,18 +206,18 @@ public class NoticeController {
         Long contentId = (Long) session.getAttribute("contentId");
 
         if (bindingResult.hasErrors()) {
-            return "board/notice/notice_rewrite";
+            return "board/inquiry/inquiry_rewrite";
         }
 
-        Notice findNotice = noticeRepository.findByNoticeId(contentId);
-        List<UploadFile> findUploadFile = uploadFileRepository.findAllUploadFile(contentId);
+        Inquiry findNotice = inquiryRepository.findByInquiryId(contentId);
+        List<InquiryUploadFile> findUploadFile = inquiryUploadFileRepository.findAllInquiryUploadFile(contentId);
 
         findNotice.setTitle(form.getTitle());
         findNotice.setContent(form.getContent());
 
         for (int i = 0; i < findUploadFile.size(); i++) {
-            UploadFile file = findUploadFile.get(i);
-            uploadFileRepository.delete(file);
+            InquiryUploadFile file = findUploadFile.get(i);
+            inquiryUploadFileRepository.delete(file);
         }
 
         if (!uploadFile.isEmpty()) {
@@ -249,31 +225,13 @@ public class NoticeController {
                 if (!multipartFile.getOriginalFilename().equals("")) {
                     String originalFilename = multipartFile.getOriginalFilename();
                     String s3UploadFile = s3Uploader.upload(multipartFile, "static");
-                    UploadFile file = new UploadFile(originalFilename, s3UploadFile, findNotice);
-                    uploadFileRepository.save(file);
+                    InquiryUploadFile file = new InquiryUploadFile(originalFilename, s3UploadFile, findNotice);
+                    inquiryUploadFileRepository.save(file);
                     log.info("success");
                 }
             }
         }
 
-        return "redirect:/notice";
-    }
-
-    @GetMapping("/notice_top/{contentId}")
-    @Transactional
-    public String noticeTop(@PathVariable("contentId") Long id) {
-        Notice findNotice = noticeRepository.findByNoticeId(id);
-        findNotice.makeNotice();
-
-        return "redirect:/notice";
-    }
-
-    @GetMapping("/notice_under/{contentId}")
-    @Transactional
-    public String noticeUnder(@PathVariable("contentId") Long id) {
-        Notice findNotice = noticeRepository.findByNoticeId(id);
-        findNotice.cancelNotice();
-
-        return "redirect:/notice";
+        return "redirect:/inquiry";
     }
 }

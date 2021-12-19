@@ -22,7 +22,7 @@
 <div class="container">
     <div class="table-wrap">
         <div>
-            <h2>공지사항</h2>
+            <h2>채용정보</h2>
         </div>
         <table class="table table-hover">
             <thead>
@@ -38,7 +38,7 @@
                 <tr th:each="board : ${noticeTop}" th:classappend="${board.notice} == '1' ? 'top-notice'">
                     <td th:text="${board.id}" class="number">No</td>
                     <td class="title">
-                        <a th:text="${board.title}" th:href="@{/notice_content/{contentId}(contentId = ${board.id})}">
+                        <a th:text="${board.title}" th:href="@{/info_content/{contentId}(contentId = ${board.id})}">
                             제목
                         </a>
                     </td>
@@ -49,7 +49,7 @@
                 <tr th:each="board : ${board}">
                     <td th:text="${board.id}" class="number">No</td>
                     <td class="title">
-                        <a th:text="${board.title}" th:href="@{/notice_content/{contentId}(contentId = ${board.id})}">
+                        <a th:text="${board.title}" th:href="@{/info_content/{contentId}(contentId = ${board.id})}">
                             제목
                         </a>
                     </td>
@@ -60,13 +60,13 @@
             </tbody>
         </table>
         <div class="page">
-            <a href="/notice/?page=1"><<</a>
-            <a th:each="page : ${pageCount}" th:href="@{/notice/(page=${page.value})}" th:text="${page.value}">page</a>
-            <a th:href="@{/notice/(page=${lastPage})}">>></a>
+            <a href="/search/?page=1"><<</a>
+            <a th:each="page : ${pageCount}" th:href="@{/search/(page=${page.value})}" th:text="${page.value}">page</a>
+            <a th:href="@{/search/(page=${lastPage})}">>></a>
         </div>
     </div>
     <div class="hidden-notice">
-        <h5>공지사항</h5>
+        <h5>채용정보</h5>
     </div>
     <div class="board-footer">
         <button class="btn btn-dark" type="button" id="write">글쓰기</button>
@@ -75,7 +75,7 @@
 
 <div class="mini-notice">
     <div th:each="mini : ${noticeTop}" class="mini-notice-info" th:classappend="${mini.notice} == 1 ? 'top-notice'">
-        <a class="mini-title" th:href="@{/notice_content/{contentId}(contentId = ${mini.id})}">
+        <a class="mini-title" th:href="@{/info_content/{contentId}(contentId = ${mini.id})}">
             <p th:text="${mini.title}">제목</p>
             <p th:text="${mini.member.name}" class="content-info"></p>
             <p th:text="${mini.writeDate}" class="content-info"></p>
@@ -84,7 +84,7 @@
         </a>
     </div>
     <div th:each="mini : ${board}" class="mini-notice-info">
-        <a class="mini-title" th:href="@{/notice_content/{contentId}(contentId = ${mini.id})}">
+        <a class="mini-title" th:href="@{/info_content/{contentId}(contentId = ${mini.id})}">
             <p th:text="${mini.title}">제목</p>
             <p th:text="${mini.member.name}" class="content-info"></p>
             <p th:text="${mini.writeDate}" class="content-info"></p>
@@ -93,9 +93,9 @@
         </a>
     </div>
     <div class="page">
-        <a href="/notice/?page=1"><<</a>
-        <a th:each="page : ${pageCount}" th:href="@{/notice/(page=${page.value})}" th:text="${page.value}">page</a>
-        <a th:href="@{/notice/(page=${lastPage})}">>></a>
+        <a href="/info/?page=1"><<</a>
+        <a th:each="page : ${pageCount}" th:href="@{/info/(page=${page.value})}" th:text="${page.value}">page</a>
+        <a th:href="@{/info/(page=${lastPage})}">>></a>
     </div>
 </div>
 
@@ -110,15 +110,15 @@
             var email = '[[${session.email}]]'
             if (email == "") {
                 alert('로그인을 진행해주십시오.');
-                location.href = "/notice";
+                location.href = "/info";
             }
 
             if (dtype == "GUEST") {
                 alert('글쓰기 권한이 없습니다.');
-                location.href = "/notice";
+                location.href = "/info";
             }
             else if (dtype == "ADMIN") {
-                location.href = "/notice_write";
+                location.href = "/info_write";
             }
         });
     })

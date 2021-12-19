@@ -23,6 +23,7 @@
     <div class="table-wrap">
         <div>
             <h2>공지사항</h2>
+            <p>발급가능서류 - 재직증명서, 경력증명서, 퇴직증명서, 원천징수영수증, 연말정산서류, 기타</p>
         </div>
         <table class="table table-hover">
             <thead>
@@ -35,21 +36,10 @@
             </tr>
             </thead>
             <tbody>
-                <tr th:each="board : ${noticeTop}" th:classappend="${board.notice} == '1' ? 'top-notice'">
-                    <td th:text="${board.id}" class="number">No</td>
-                    <td class="title">
-                        <a th:text="${board.title}" th:href="@{/notice_content/{contentId}(contentId = ${board.id})}">
-                            제목
-                        </a>
-                    </td>
-                    <td th:text="${board.member.name}" class="writer">글쓴이</td>
-                    <td th:text="${board.writeDate}" class="write-date">작성시간</td>
-                    <td th:text="${board.count}" class="count">조회수</td>
-                </tr>
                 <tr th:each="board : ${board}">
                     <td th:text="${board.id}" class="number">No</td>
                     <td class="title">
-                        <a th:text="${board.title}" th:href="@{/notice_content/{contentId}(contentId = ${board.id})}">
+                        <a th:text="${board.title}" th:href="@{/inquiry_content/{contentId}(contentId = ${board.id})}">
                             제목
                         </a>
                     </td>
@@ -60,9 +50,9 @@
             </tbody>
         </table>
         <div class="page">
-            <a href="/notice/?page=1"><<</a>
-            <a th:each="page : ${pageCount}" th:href="@{/notice/(page=${page.value})}" th:text="${page.value}">page</a>
-            <a th:href="@{/notice/(page=${lastPage})}">>></a>
+            <a href="/inquiry/?page=1"><<</a>
+            <a th:each="page : ${pageCount}" th:href="@{/inquiry/(page=${page.value})}" th:text="${page.value}">page</a>
+            <a th:href="@{/inquiry/(page=${lastPage})}">>></a>
         </div>
     </div>
     <div class="hidden-notice">
@@ -74,15 +64,6 @@
 </div>
 
 <div class="mini-notice">
-    <div th:each="mini : ${noticeTop}" class="mini-notice-info" th:classappend="${mini.notice} == 1 ? 'top-notice'">
-        <a class="mini-title" th:href="@{/notice_content/{contentId}(contentId = ${mini.id})}">
-            <p th:text="${mini.title}">제목</p>
-            <p th:text="${mini.member.name}" class="content-info"></p>
-            <p th:text="${mini.writeDate}" class="content-info"></p>
-            <p class="content-info">조회수</p>
-            <p th:text="${mini.count}" class="content-info"></p>
-        </a>
-    </div>
     <div th:each="mini : ${board}" class="mini-notice-info">
         <a class="mini-title" th:href="@{/notice_content/{contentId}(contentId = ${mini.id})}">
             <p th:text="${mini.title}">제목</p>
@@ -93,9 +74,9 @@
         </a>
     </div>
     <div class="page">
-        <a href="/notice/?page=1"><<</a>
-        <a th:each="page : ${pageCount}" th:href="@{/notice/(page=${page.value})}" th:text="${page.value}">page</a>
-        <a th:href="@{/notice/(page=${lastPage})}">>></a>
+        <a href="/inquiry/?page=1"><<</a>
+        <a th:each="page : ${pageCount}" th:href="@{/inquiry/(page=${page.value})}" th:text="${page.value}">page</a>
+        <a th:href="@{/inquiry/(page=${lastPage})}">>></a>
     </div>
 </div>
 
@@ -106,19 +87,13 @@
         const write = document.getElementById('write');
 
         write.addEventListener('click', () =>{
-            var dtype = '[[${session.dtype}]]'
             var email = '[[${session.email}]]'
             if (email == "") {
                 alert('로그인을 진행해주십시오.');
-                location.href = "/notice";
+                location.href = "/inquiry";
             }
-
-            if (dtype == "GUEST") {
-                alert('글쓰기 권한이 없습니다.');
-                location.href = "/notice";
-            }
-            else if (dtype == "ADMIN") {
-                location.href = "/notice_write";
+            else {
+                location.href = "/inquiry_write";
             }
         });
     })

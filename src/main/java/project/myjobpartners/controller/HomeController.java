@@ -40,21 +40,25 @@ public class HomeController {
         return "business/contracting";
     }
 
-    @GetMapping("/info")
-    public String info() {
-        return "board/info";
-    }
-
-    @GetMapping("/inquiry")
-    public String inquiry() {
-        return "board/inquiry";
+    @GetMapping("/info_write")
+    public String infoWrite(Model model) {
+        WriteForm write = new WriteForm();
+        model.addAttribute("write", write);
+        return "board/info/info_write";
     }
 
     @GetMapping("/notice_write")
-    public String write(Model model, HttpServletRequest request) {
+    public String write(Model model) {
         WriteForm write = new WriteForm();
         model.addAttribute("write", write);
         return "board/notice/notice_write";
+    }
+
+    @GetMapping("/inquiry_write")
+    public String inquiryWrite(Model model) {
+        WriteForm write = new WriteForm();
+        model.addAttribute("write", write);
+        return "board/inquiry/inquiry_write";
     }
 
     @GetMapping("/join")
